@@ -1,18 +1,28 @@
-import QtQuick 2.0
-import QtQuick.Window 2.0
+import QtQuick 2.15
+import QtQuick.Window 2.15
 
 Window {
-    required property var model
+    required property var listModel
 
-    id: window
-    width: 640
-    height: 480
+    objectName: "window"
+    width: 800
+    height: 600
+    minimumWidth: 600
+    minimumHeight: 300
     visible: true
-    title: qsTr("Hello World")
+    color: "#303030"
+    title: qsTr("Cerebra")
 
-    Loader {
-        id: loader
+
+    Item {
         anchors.fill: parent
-        Component.onCompleted: setSource("view.qml", {"listModel": window.model})
+
+        Loader {
+            width: parent.width / 2
+            height: parent.height * 2 / 3
+            anchors.centerIn: parent
+
+            Component.onCompleted: setSource("view.qml", {"listModel": listModel})
+        }
     }
 }

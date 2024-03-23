@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>main.qml</file>
+        <file>view.qml</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>delete.svg</file>
+    </qresource>
+</RCC>

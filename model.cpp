@@ -26,7 +26,7 @@ void RecordModel::push(const QString &body) {
 
 void RecordModel::remove(const int index, const int count) {
     beginRemoveRows(QModelIndex(), index, index + count - 1);
-    for (int row = 0; row < count; ++row) {
+    for (int row = 0; row < count; row++) {
         records.removeAt(index);
     }
     endRemoveRows();
