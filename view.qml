@@ -52,29 +52,32 @@ Column {
             Repeater {
                 model: listModel
 
-                Rectangle {
+                Item {
                     required property string body
-                    required property bool blockDeletion
+                    required property bool checked
                     required property int index
-                    property bool checked: false
 
                     id: record
-                    width: children[0].width
+                    z: 0
+                    width: children[1].width
                     height: 48
-                    z: 1
-                    border.width: 1
-                    border.color: "#E0E0E0"
-                    radius: 24
-                    color: checked ? "#404040" : "#202020"
+
+                    Rectangle {
+                        anchors.fill: parent
+                        border.width: 1
+                        border.color: "#E0E0E0"
+                        radius: 24
+                        color: checked ? "#404040" : "#202020"
+                    }
 
                     Row {
-                        anchors.fill: parent
+                        height: parent.height
                         width: leftPadding + children[0].width + children[1].width
-                        z: 2
+                        z: 1
                         leftPadding: 16
 
                         Text {
-                            height: record.height
+                            height: parent.height
                             verticalAlignment: Text.AlignVCenter
                             text: record.body
                             font.pixelSize: 20
@@ -83,10 +86,9 @@ Column {
                         }
                         Button {
                             id: deleteButton
-                            height: record.height
-                            width: record.height
+                            height: parent.height
+                            width: parent.height
                             background: Rectangle { color: "transparent" }
-
                             icon.source: "qrc:/icons/delete.svg"
                             icon.color: hovered ? "White" : "#E0E0E0"
 
@@ -99,7 +101,7 @@ Column {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            record.checked = !record.checked
+                            listModel.changeChecked(record.index)
                         }
                     }
                 }

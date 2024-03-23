@@ -1,17 +1,17 @@
 #include "model.h"
 
 
-Record::Record(const QString &body, const bool blockDeletion) : text(body), flag(blockDeletion) { }
+Record::Record(const QString &body, const bool checked) : text(body), flag(checked) { }
 
 QString Record::body() const {
     return text;
 }
 
-bool Record::blockDeletion() const {
+bool Record::checked() const {
     return flag;
 }
 
-void Record::changeBlockDeletion() {
+void Record::changeChecked() {
     flag = !flag;
 }
 
@@ -32,13 +32,13 @@ void RecordModel::remove(const int index, const int count) {
     endRemoveRows();
 }
 
-void RecordModel::changeBlockDeletion(const int index) {
+void RecordModel::changeChecked(const int index) {
     if (index < 0 || index >= records.count())
         return;
 
-    records[index].changeBlockDeletion();
+    records[index].changeChecked();
     const QModelIndex &i = this->index(index, 0);
-    emit dataChanged(i, i, { BlockDeletionRole });
+    emit dataChanged(i, i, { CheckedRole });
 }
 
 int RecordModel::rowCount(const QModelIndex &parent) const {
@@ -53,14 +53,14 @@ QVariant RecordModel::data(const QModelIndex &index, const int role) const {
     const Record &record = records[index.row()];
     if (role == BodyRole)
         return record.body();
-    else if (role == BlockDeletionRole)
-        return record.blockDeletion();
+    else if (role == CheckedRole)
+        return record.checked();
     return QVariant();
 }
 
 QHash<int, QByteArray> RecordModel::roleNames() const {
     QHash<int, QByteArray> roles;
     roles[BodyRole] = "body";
-    roles[BlockDeletionRole] = "blockDeletion";
+    roles[CheckedRole] = "checked";
     return roles;
 }

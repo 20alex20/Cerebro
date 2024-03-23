@@ -5,10 +5,10 @@
 
 class Record {
 public:
-    Record(const QString &body, const bool blockDeletion);
+    Record(const QString &body, const bool checked);
     QString body() const;
-    bool blockDeletion() const;
-    void changeBlockDeletion();
+    bool checked() const;
+    void changeChecked();
 private:
     QString text;
     bool flag;
@@ -20,13 +20,13 @@ class RecordModel : public QAbstractListModel {
 public:
     enum RecordRoles {
         BodyRole = Qt::UserRole + 1,
-        BlockDeletionRole
+        CheckedRole
     };
 
     RecordModel(QObject *parent = 0);
     Q_INVOKABLE void push(const QString &body);
     Q_INVOKABLE void remove(const int index, const int count = 1);
-    Q_INVOKABLE void changeBlockDeletion(const int index);
+    Q_INVOKABLE void changeChecked(const int index);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, const int role) const;
 protected:
