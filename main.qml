@@ -13,6 +13,6 @@ Window {
     Loader {
         id: loader
         anchors.fill: parent
-        Component.onCompleted: setSource("view.qml", {"model": window.model})
+        Component.onCompleted: setSource("view.qml", {"listModel": window.model})
     }
 }

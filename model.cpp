@@ -1,26 +1,44 @@
 #include "model.h"
 
+
 Record::Record(const QString &body, const bool blockDeletion) : text(body), flag(blockDeletion) { }
 
 QString Record::body() const {
     return text;
 }
 
-QString Record::blockDeletion() const {
+bool Record::blockDeletion() const {
     return flag;
 }
 
-void Record::setBlockDeletion(const QVariant &value) {
-    flag = value.toBool();
+void Record::changeBlockDeletion() {
+    flag = !flag;
 }
 
 
 RecordModel::RecordModel(QObject *parent) : QAbstractListModel(parent) { }
 
-void RecordModel::addRecord(const Record &record) {
+void RecordModel::push(const QString &body) {
     beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    records << record;
+    records << Record(body, false);
     endInsertRows();
+}
+
+void RecordModel::remove(const int index, const int count) {
+    beginRemoveRows(QModelIndex(), index, index + count - 1);
+    for (int row = 0; row < count; ++row) {
+        records.removeAt(index);
+    }
+    endRemoveRows();
+}
+
+void RecordModel::changeBlockDeletion(const int index) {
+    if (index < 0 || index >= records.count())
+        return;
+
+    records[index].changeBlockDeletion();
+    const QModelIndex &i = this->index(index, 0);
+    emit dataChanged(i, i, { BlockDeletionRole });
 }
 
 int RecordModel::rowCount(const QModelIndex &parent) const {
@@ -38,17 +56,6 @@ QVariant RecordModel::data(const QModelIndex &index, const int role) const {
     else if (role == BlockDeletionRole)
         return record.blockDeletion();
     return QVariant();
-}
-
-bool RecordModel::setData(const QModelIndex &index, const QVariant &value, const int role) {
-    if (index.row() < 0 || index.row() >= records.count())
-        return false;
-
-    if (role == BlockDeletionRole) {
-        records[index.row()].setBlockDeletion(value);
-        return true;
-    }
-    return false;
 }
 
 QHash<int, QByteArray> RecordModel::roleNames() const {

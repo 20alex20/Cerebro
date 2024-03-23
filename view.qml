@@ -1,14 +1,14 @@
 import QtQuick 2.0
 
 Column {
-    property var model
+    property var listModel
 
     id: view
 
     ListView {
         width: view.width;
         height: 250
-        model: view.model
+        model: listModel
         delegate: Text {
             required property string body
             required property bool blockDeletion
@@ -19,9 +19,17 @@ Column {
                 anchors.fill: parent
 
                 onClicked: {
-                    blockDeletion = false
+                    listModel.changeBlockDeletion(0)
+                    listModel.remove(1)
+                    listModel.push("mmm")
                 }
             }
+        }
+
+        Component.onCompleted: {
+            listModel.push("first")
+            listModel.push("second")
+            listModel.push("third")
         }
     }
 }
