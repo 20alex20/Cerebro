@@ -8,21 +8,20 @@ Window {
     width: 800
     height: 600
     minimumWidth: 600
-    minimumHeight: 300
+    minimumHeight: 450
     visible: true
     color: "#303030"
     title: qsTr("Cerebra")
-
 
     Item {
         anchors.fill: parent
 
         Loader {
-            width: parent.width / 2
-            height: parent.height * 2 / 3
             anchors.centerIn: parent
+            width: parent.width * 2 / 3
+            height: parent.height * 2 / 3
 
-            Component.onCompleted: setSource("view.qml", {"listModel": listModel})
+            Component.onCompleted: setSource("view.qml", { "listModel": listModel })
         }
     }
 }

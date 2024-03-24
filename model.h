@@ -25,7 +25,8 @@ public:
 
     RecordModel(QObject *parent = 0);
     Q_INVOKABLE void push(const QString &body);
-    Q_INVOKABLE void remove(const int index, const int count = 1);
+    Q_INVOKABLE void remove(const int index);
+    Q_INVOKABLE void removeChecked();
     Q_INVOKABLE void changeChecked(const int index);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, const int role) const;

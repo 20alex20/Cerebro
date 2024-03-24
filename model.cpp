@@ -24,18 +24,27 @@ void RecordModel::push(const QString &body) {
     endInsertRows();
 }
 
-void RecordModel::remove(const int index, const int count) {
-    beginRemoveRows(QModelIndex(), index, index + count - 1);
-    for (int row = 0; row < count; row++) {
-        records.removeAt(index);
-    }
+void RecordModel::remove(const int index) {
+    beginRemoveRows(QModelIndex(), index, index);
+    records.removeAt(index);
     endRemoveRows();
 }
 
-void RecordModel::changeChecked(const int index) {
-    if (index < 0 || index >= records.count())
-        return;
+void RecordModel::removeChecked() {
+    int index = 0;
+    while (index < records.count()) {
+        if (records[index].checked()) {
+            beginRemoveRows(QModelIndex(), index, index);
+            records.removeAt(index);
+            endRemoveRows();
+        }
+        else {
+            index++;
+        }
+    }
+}
 
+void RecordModel::changeChecked(const int index) {
     records[index].changeChecked();
     const QModelIndex &i = this->index(index, 0);
     emit dataChanged(i, i, { CheckedRole });
